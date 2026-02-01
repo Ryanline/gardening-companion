@@ -2,18 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Garden Companion</title>
+  <title>Gardening Companion</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
+<!-- Toast notification -->
+<div id="toast" class="toast hidden" aria-live="polite"></div>
+
 <body>
   <header>
-    <h1>🌱 Garden Companion</h1>
+    <h1>🌱 Gardening Companion</h1>
     <button id="add-plant-btn">+ Add Plant</button>
   </header>
 
   <main>
     <ul id="plant-list"></ul>
   </main>
+
+  <!-- Plant Detail Modal -->
+  <div id="modal-backdrop" class="hidden"></div>
+
+  <div id="plant-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h2 id="modal-title">Plant</h2>
+      <button id="modal-close-btn" aria-label="Close">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-row">
+        <div><strong>Last watered:</strong> <span id="modal-last-watered">Never</span></div>
+        <button id="modal-water-btn">Log Watering</button>
+      </div>
+
+      <hr />
+
+      <h3>Watering history</h3>
+      <ul id="modal-water-log"></ul>
+
+      <hr />
+
+      <h3>Growth photos</h3>
+      <input type="file" id="photo-input" accept="image/*" />
+      <div id="photo-gallery" class="photo-gallery"></div>
+
+      <hr />
+
+      <h3>Plant Insight</h3>
+      <div class="insight-actions">
+        <button id="modal-care-btn">How to Care</button>
+        <button id="modal-fact-btn">Fun Fact</button>
+      </div>
+      <div id="modal-insight" class="insight-box hidden"></div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
