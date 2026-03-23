@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gardening Companion</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./">Gardening Companion</a>
+
+    <div class="menu-shell">
+      <button
+        id="menu-toggle"
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="version-menu"
+        aria-label="Toggle version menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="version-menu" class="version-menu hidden" aria-label="Version navigation">
+        <a href="./">Landing Page</a>
+        <a href="./gardening-companion-v6/">Version 6</a>
+        <a href="./gardening-companion-v8/">Version 8</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="landing">
+    <section class="hero-card">
+      <p class="eyebrow">Version Hub</p>
+      <h1>Gardening Companion</h1>
+      <p class="hero-copy">
+        Explore the different iterations of the project from one landing page.
+      </p>
+    </section>
+
+    <section class="versions-card" aria-labelledby="versions-heading">
+      <h2 id="versions-heading">Versions:</h2>
+
+      <ul class="version-list">
+        <li>
+          <a class="version-link" href="./gardening-companion-v6/">
+            <span class="version-name">Version 6</span>
+            <span class="version-url">ryanbrooks.io/gardening-companion/gardening-companion-v6</span>
+          </a>
+        </li>
+        <li>
+          <a class="version-link" href="./gardening-companion-v8/">
+            <span class="version-name">Version 8</span>
+            <span class="version-url">ryanbrooks.io/gardening-companion/gardening-companion-v8</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
