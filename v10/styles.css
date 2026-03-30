@@ -24,10 +24,17 @@ body {
   color: #f3ecd2;
   text-decoration: none;
   font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
 }
 
 .top-nav a:hover {
   text-decoration: underline;
+}
+
+.top-nav a.is-current {
+  background: rgba(247, 243, 223, 0.22);
+  text-decoration: none;
 }
 
 .hero {
