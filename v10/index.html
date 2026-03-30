@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gardening Companion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast" class="toast hidden" aria-live="polite"></div>
+
+  <div id="delete-banner" class="delete-banner hidden" role="status" aria-live="polite">
+    <span>Plant successfully deleted.</span>
+    <button id="undo-delete-btn" type="button">Undo?</button>
+  </div>
+
+  <header class="hero-shell">
+    <nav class="top-nav" aria-label="Version navigation">
+      <a href="../">Table of Contents</a>
+      <a href="../v6/">v6</a>
+      <a href="../v8/">v8</a>
+      <a href="../v9/">v9</a>
+      <a href="./">v10</a>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-copy">
+        <h1>Gardening Companion</h1>
+        <button id="add-plant-btn">Add Plant</button>
+      </div>
+      <div class="hero-photo-wrap">
+        <img class="hero-photo" src="assets/garden-photo.avif" alt="Garden photo" />
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <ul id="plant-list"></ul>
+  </main>
+
+  <div id="plant-picker-backdrop" class="hidden"></div>
+
+  <div id="plant-picker-modal" class="picker-modal hidden" role="dialog" aria-modal="true" aria-labelledby="plant-picker-title">
+    <div class="picker-modal-inner">
+      <h2 id="plant-picker-title">Select an option:</h2>
+      <div id="plant-picker-options" class="picker-options"></div>
+    </div>
+  </div>
+
+  <div id="modal-backdrop" class="hidden"></div>
+
+  <div id="plant-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h2 id="modal-title">Plant</h2>
+      <button id="modal-close-btn" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-row">
+        <div id="modal-status" class="water-status status-warning">This plant may need watering. You may have already watered the plant but the system failed to display it -- in this case, we apologize for the inconvenience and please contact support!</div>
+        <button id="modal-water-btn">Log Watering</button>
+      </div>
+
+      <hr />
+
+      <h3>Watering history</h3>
+      <ul id="modal-water-log"></ul>
+
+      <hr />
+
+      <h3>Growth photos</h3>
+      <input type="file" id="photo-input" accept="image/*" />
+      <div id="photo-gallery" class="photo-gallery"></div>
+
+      <hr />
+
+      <h3>Plant Insight</h3>
+      <div class="insight-actions">
+        <button id="modal-care-btn">How to Care</button>
+        <button id="modal-fact-btn">Fun Fact</button>
+      </div>
+      <div id="modal-insight" class="insight-box hidden"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
