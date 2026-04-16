@@ -510,6 +510,10 @@ main {
   cursor: pointer;
 }
 
+.delete-banner.hidden {
+  display: none;
+}
+
 .toast {
   position: fixed;
   top: 50%;
@@ -591,4 +595,5 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
