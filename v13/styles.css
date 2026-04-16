@@ -59,9 +59,13 @@ main {
 .hero {
   padding: 0 0 1.75rem;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
-  gap: 2rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
   align-items: center;
+}
+
+.hero-copy {
+  grid-column: span 2;
 }
 
 .hero h1 {
@@ -82,10 +86,11 @@ main {
 .hero-photo-wrap {
   display: flex;
   justify-content: flex-end;
+  grid-column: 3;
 }
 
 .hero-photo {
-  width: min(100%, 340px);
+  width: 100%;
   aspect-ratio: 5 / 4;
   object-fit: cover;
   border-radius: 28px;
@@ -595,5 +600,6 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
