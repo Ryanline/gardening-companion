@@ -247,13 +247,16 @@ main {
 }
 
 .watering-button {
-  width: 64px;
-  height: 64px;
+  background: #4d78b8;
+}
+
+.watering-button:hover {
+  background: #4169a3;
 }
 
 .watering-button img {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
 }
 
 #plant-picker-backdrop,
@@ -588,3 +591,4 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
