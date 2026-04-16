@@ -425,7 +425,9 @@ main {
 }
 
 .modal-body {
+  position: relative;
   padding-top: 0.9rem;
+  padding-bottom: 5.5rem;
 }
 
 .modal-section + .modal-section {
@@ -456,13 +458,7 @@ main {
   align-self: end;
 }
 
-.modal-row {
-  position: relative;
-  min-height: 220px;
-  padding-bottom: 4.75rem;
-}
-
-.modal-row .watering-button {
+.modal-water-floating {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -669,6 +665,7 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
 
