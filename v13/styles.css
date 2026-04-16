@@ -305,6 +305,7 @@ main {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
+  z-index: 3000;
 }
 
 .picker-modal {
@@ -318,6 +319,7 @@ main {
   background: white;
   border-radius: 28px;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+  z-index: 3100;
 }
 
 .picker-modal-inner {
@@ -382,6 +384,7 @@ main {
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.25);
   max-height: 84vh;
   overflow-y: auto;
+  z-index: 3100;
 }
 
 .graph-modal {
@@ -636,6 +639,7 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
 
