@@ -425,9 +425,6 @@ main {
 }
 
 .modal-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 520px;
   padding-top: 0.9rem;
 }
 
@@ -459,9 +456,10 @@ main {
   align-self: end;
 }
 
-.modal-water-floating {
-  margin-top: auto;
-  align-self: flex-end;
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.75rem;
 }
 
 #modal-water-log {
@@ -665,6 +663,7 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
 
