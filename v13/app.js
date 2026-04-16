@@ -545,7 +545,9 @@ function showInsight(text) {
 
 function renderGraph() {
   const series = plants
-    .map((plant, index) => ({
+    .map((plant, index) => ({ plant, index }))
+    .filter(({ plant }) => Boolean(plant))
+    .map(({ plant, index }) => ({
       name: plant.name,
       color: GRAPH_COLORS[index % GRAPH_COLORS.length],
       points: (plant.waterLog ?? [])
@@ -784,6 +786,7 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
 
 
 
