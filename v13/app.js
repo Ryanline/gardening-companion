@@ -54,6 +54,7 @@ const photoInput = document.getElementById("photo-input");
 const photoGallery = document.getElementById("photo-gallery");
 
 let selectedPlantId = null;
+let pendingPlantSlotIndex = null;
 let plants = loadPlants();
 let imageCache = loadImageCache();
 const pendingImageRequests = new Set();
@@ -146,18 +147,41 @@ function showToast(message, ms = 4000) {
 
 function loadPlants() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return [];
+  if (!raw) return createEmptyGarden();
 
   try {
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    return normalizePlants(parsed);
   } catch {
-    return [];
+    return createEmptyGarden();
   }
 }
 
 function savePlants() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(plants));
+}
+
+function createEmptyGarden() {
+  return Array.from({ length: GRID_SIZE }, () => null);
+}
+
+function normalizePlants(value) {
+  const slots = createEmptyGarden();
+  if (!Array.isArray(value)) return slots;
+
+  value.slice(0, GRID_SIZE).forEach((plant, index) => {
+    slots[index] = plant && typeof plant === "object" ? plant : null;
+  });
+
+  return slots;
+}
+
+function countPlants() {
+  return plants.filter(Boolean).length;
+}
+
+function getFirstEmptySlotIndex() {
+  return plants.findIndex((plant) => !plant);
 }
 
 function renderPlantPickerOptions() {
@@ -178,15 +202,15 @@ function handlePlantOptionSelect(optionName) {
     const customName = prompt("Enter your plant name:");
     if (!customName) return;
 
-    addPlant(customName);
+    addPlant(customName, pendingPlantSlotIndex);
     return;
   }
 
-  addPlant(optionName);
+  addPlant(optionName, pendingPlantSlotIndex);
 }
 
-function addPlant(name) {
-  if (plants.length >= GRID_SIZE) {
+function addPlant(name, slotIndex = null) {
+  if (countPlants() >= GRID_SIZE) {
     closePlantPicker();
     showToast("Your garden is full.");
     return;
@@ -195,7 +219,17 @@ function addPlant(name) {
   const trimmed = name.trim();
   if (!trimmed) return;
 
-  plants.push({
+  const targetSlot = Number.isInteger(slotIndex) && slotIndex >= 0 && slotIndex < GRID_SIZE && !plants[slotIndex]
+    ? slotIndex
+    : getFirstEmptySlotIndex();
+
+  if (targetSlot === -1) {
+    closePlantPicker();
+    showToast("Your garden is full.");
+    return;
+  }
+
+  plants[targetSlot] = {
     id: Date.now(),
     name: trimmed,
     createdAt: new Date().toISOString(),
@@ -203,7 +237,7 @@ function addPlant(name) {
     waterLog: [],
     photos: [],
     type: ""
-  });
+  };
 
   closePlantPicker();
   savePlants();
@@ -283,7 +317,7 @@ function renderPlants() {
     } else {
       li.innerHTML = `
         <div class="empty-plot is-add-slot">
-          <button data-action="open-picker" class="icon-button" type="button">
+          <button data-action="open-picker" data-slot-index="${slotIndex}" class="icon-button" type="button">
             <img src="assets/new-plant.png" alt="" />
             <span class="sr-only">Add Plant</span>
           </button>
@@ -316,7 +350,10 @@ function renderPlants() {
   });
 
   plantList.querySelectorAll("button[data-action='open-picker']").forEach((btn) => {
-    btn.addEventListener("click", openPlantPicker);
+    btn.addEventListener("click", (e) => {
+      const slotIndex = Number(e.currentTarget.dataset.slotIndex);
+      openPlantPicker(slotIndex);
+    });
   });
 
   hydratePlantImages();
@@ -344,7 +381,7 @@ function logWatering(plantId) {
 }
 
 function deletePlant(plantId) {
-  const index = plants.findIndex((plant) => plant.id === plantId);
+  const index = plants.findIndex((plant) => plant?.id === plantId);
   if (index === -1) return;
 
   pendingDeletedPlant = {
@@ -352,7 +389,7 @@ function deletePlant(plantId) {
     index
   };
 
-  plants.splice(index, 1);
+  plants[index] = null;
   savePlants();
   renderPlants();
   if (!graphModal.classList.contains("hidden")) {
@@ -379,7 +416,7 @@ function showDeleteBanner() {
 function undoPlantDelete() {
   if (!pendingDeletedPlant) return;
 
-  plants.splice(pendingDeletedPlant.index, 0, pendingDeletedPlant.plant);
+  plants[pendingDeletedPlant.index] = pendingDeletedPlant.plant;
   pendingDeletedPlant = null;
   if (deleteUndoTimer) clearTimeout(deleteUndoTimer);
   deleteBanner.classList.add("hidden");
@@ -489,12 +526,14 @@ function syncBackdrop() {
   modalBackdrop.classList.toggle("hidden", !shouldShow);
 }
 
-function openPlantPicker() {
+function openPlantPicker(slotIndex = null) {
+  pendingPlantSlotIndex = Number.isInteger(slotIndex) ? slotIndex : getFirstEmptySlotIndex();
   plantPickerBackdrop.classList.remove("hidden");
   plantPickerModal.classList.remove("hidden");
 }
 
 function closePlantPicker() {
+  pendingPlantSlotIndex = null;
   plantPickerBackdrop.classList.add("hidden");
   plantPickerModal.classList.add("hidden");
 }
@@ -627,7 +666,7 @@ function getCachedPlantImage(name) {
 }
 
 function hydratePlantImages() {
-  plants.forEach((plant) => {
+  plants.filter(Boolean).forEach((plant) => {
     ensurePlantImageForName(plant.name);
   });
 }
@@ -745,6 +784,11 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+
+
+
+
 
 
 
