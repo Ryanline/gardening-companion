@@ -245,8 +245,19 @@ main {
 
 .plant-card--photo .plant-name,
 .plant-card--photo .water-status {
-  color: #ffffff;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+
+.plant-card--photo .plant-name {
+  color: #ffffff;
+}
+
+.plant-card--photo .status-ok {
+  color: #ffffff;
+}
+
+.plant-card--photo .status-warning {
+  color: #f6c36b;
 }
 
 .info-button {
@@ -292,9 +303,12 @@ main {
   color: var(--text-dark);
 }
 
-.status-ok,
-.status-warning {
+.status-ok {
   color: var(--text-dark);
+}
+
+.status-warning {
+  color: #f0b35f;
 }
 
 .watering-button {
@@ -676,6 +690,7 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
 
