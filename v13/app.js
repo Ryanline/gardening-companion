@@ -266,7 +266,7 @@ function renderPlants() {
           </div>
         </article>
       `;
-    } else if (plants.length === 0 && slotIndex === 4) {
+    } else {
       li.innerHTML = `
         <div class="empty-plot is-add-slot">
           <button data-action="open-picker" class="icon-button" type="button">
@@ -275,8 +275,6 @@ function renderPlants() {
           </button>
         </div>
       `;
-    } else {
-      li.innerHTML = '<div class="empty-plot" aria-hidden="true"></div>';
     }
 
     plantList.appendChild(li);
@@ -639,4 +637,5 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
 
