@@ -184,12 +184,22 @@ main {
   overflow: hidden;
 }
 
+.plant-card--photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 20, 10, 0.18);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
 .plant-card-content {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  height: 100%;
 }
 
 .plant-card--photo {
@@ -236,7 +246,7 @@ main {
 .plant-card--photo .plant-name,
 .plant-card--photo .water-status {
   color: #ffffff;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
 }
 
 .info-button {
@@ -269,9 +279,9 @@ main {
 
 .plant-footer {
   margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
   gap: 0.9rem;
 }
 
@@ -437,9 +447,25 @@ main {
   max-width: 450px;
 }
 
-.plant-footer .watering-button,
+.plant-footer .water-status {
+  align-self: end;
+  margin: 0;
+}
+
+.plant-footer .watering-button {
+  align-self: end;
+}
+
+.modal-row {
+  position: relative;
+  min-height: 220px;
+  padding-bottom: 4.75rem;
+}
+
 .modal-row .watering-button {
-  align-self: flex-end;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 
 #modal-water-log {
@@ -643,6 +669,7 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
 
