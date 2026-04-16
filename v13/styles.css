@@ -271,7 +271,7 @@ main {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 0.9rem;
 }
 
@@ -428,14 +428,18 @@ main {
 
 .modal-row {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
 #modal-status {
   max-width: 450px;
+}
+
+.plant-footer .watering-button,
+.modal-row .watering-button {
+  align-self: flex-end;
 }
 
 #modal-water-log {
@@ -639,6 +643,7 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
 
