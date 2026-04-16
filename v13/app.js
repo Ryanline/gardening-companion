@@ -21,6 +21,9 @@ const WARNING_MESSAGE = "Please water me!";
 const RECENT_WATERING_DAYS = 7;
 const DELETE_UNDO_MS = 10000;
 const GRAPH_COLORS = ["#4f7d2f", "#8a5a27", "#2e6c6f", "#8d4378", "#6d7134", "#3f5e95", "#aa7045", "#5b8b5a", "#9b4d4d"];
+const IMAGE_CACHE_KEY = "gardenCompanion.v13.imageCache";
+const COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php";
+const COMMONS_THUMB_WIDTH = 1200;
 
 const toastEl = document.getElementById("toast");
 let toastTimer = null;
@@ -52,9 +55,12 @@ const photoGallery = document.getElementById("photo-gallery");
 
 let selectedPlantId = null;
 let plants = loadPlants();
+let imageCache = loadImageCache();
+const pendingImageRequests = new Set();
 
 renderPlantPickerOptions();
 renderPlants();
+hydratePlantImages();
 
 addPlantBtn.addEventListener("click", openPlantPicker);
 openGraphBtn.addEventListener("click", openGraphModal);
@@ -246,23 +252,31 @@ function renderPlants() {
 
     if (plant) {
       const waterStatus = getWaterStatus(plant);
+      const imageUrl = getCachedPlantImage(plant.name);
+      const photoClass = imageUrl ? " plant-card--photo" : "";
+      const photoStyle = imageUrl
+        ? ` style="background-image: linear-gradient(180deg, rgba(18, 28, 14, 0.1), rgba(18, 28, 14, 0.56)), url('${escapeHtml(imageUrl)}');"`
+        : "";
+
       li.innerHTML = `
-        <article class="plant-card">
-          <button data-action="delete-plant" data-id="${plant.id}" class="plant-delete" aria-label="Delete ${escapeHtml(plant.name)}">&times;</button>
+        <article class="plant-card${photoClass}"${photoStyle}>
+          <div class="plant-card-content">
+            <button data-action="delete-plant" data-id="${plant.id}" class="plant-delete" aria-label="Delete ${escapeHtml(plant.name)}">&times;</button>
 
-          <div class="plant-title-row">
-            <strong class="plant-name">${escapeHtml(plant.name)}</strong>
-            <button data-action="open" data-id="${plant.id}" class="info-button" title="More info" aria-label="More info about ${escapeHtml(plant.name)}">
-              <img src="assets/info-icon.svg" alt="" />
-            </button>
-          </div>
+            <div class="plant-title-row">
+              <strong class="plant-name">${escapeHtml(plant.name)}</strong>
+              <button data-action="open" data-id="${plant.id}" class="info-button" title="More info" aria-label="More info about ${escapeHtml(plant.name)}">
+                <img src="assets/info-icon.svg" alt="" />
+              </button>
+            </div>
 
-          <div class="plant-footer">
-            <div class="water-status ${waterStatus.className}">${escapeHtml(waterStatus.text)}</div>
-            <button data-action="water" data-id="${plant.id}" class="icon-button watering-button" type="button">
-              <img src="assets/watering-pail.png" alt="" />
-              <span class="sr-only">Log Watering for ${escapeHtml(plant.name)}</span>
-            </button>
+            <div class="plant-footer">
+              <div class="water-status ${waterStatus.className}">${escapeHtml(waterStatus.text)}</div>
+              <button data-action="water" data-id="${plant.id}" class="icon-button watering-button" type="button">
+                <img src="assets/watering-pail.png" alt="" />
+                <span class="sr-only">Log Watering for ${escapeHtml(plant.name)}</span>
+              </button>
+            </div>
           </div>
         </article>
       `;
@@ -304,6 +318,8 @@ function renderPlants() {
   plantList.querySelectorAll("button[data-action='open-picker']").forEach((btn) => {
     btn.addEventListener("click", openPlantPicker);
   });
+
+  hydratePlantImages();
 }
 
 function getPlant(plantId) {
@@ -585,6 +601,98 @@ function renderGraph() {
   });
 }
 
+function loadImageCache() {
+  const raw = localStorage.getItem(IMAGE_CACHE_KEY);
+  if (!raw) return {};
+
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveImageCache() {
+  localStorage.setItem(IMAGE_CACHE_KEY, JSON.stringify(imageCache));
+}
+
+function normalizePlantKey(name) {
+  return String(name ?? "").trim().toLowerCase();
+}
+
+function getCachedPlantImage(name) {
+  const key = normalizePlantKey(name);
+  return imageCache[key] ?? null;
+}
+
+function hydratePlantImages() {
+  plants.forEach((plant) => {
+    ensurePlantImageForName(plant.name);
+  });
+}
+
+async function ensurePlantImageForName(name) {
+  const key = normalizePlantKey(name);
+  if (!key || Object.prototype.hasOwnProperty.call(imageCache, key) || pendingImageRequests.has(key)) {
+    return;
+  }
+
+  pendingImageRequests.add(key);
+
+  try {
+    const imageUrl = await fetchPlantImageUrl(name);
+    imageCache[key] = imageUrl;
+    saveImageCache();
+
+    if (imageUrl) {
+      renderPlants();
+    }
+  } catch {
+    imageCache[key] = null;
+    saveImageCache();
+  } finally {
+    pendingImageRequests.delete(key);
+  }
+}
+
+async function fetchPlantImageUrl(name) {
+  const queries = [`${name} plant`, name];
+
+  for (const query of queries) {
+    const params = new URLSearchParams({
+      origin: "*",
+      action: "query",
+      format: "json",
+      generator: "search",
+      gsrnamespace: "6",
+      gsrlimit: "8",
+      gsrsearch: query,
+      prop: "imageinfo",
+      iiprop: "url",
+      iiurlwidth: String(COMMONS_THUMB_WIDTH)
+    });
+
+    const response = await fetch(`${COMMONS_API_URL}?${params.toString()}`);
+    if (!response.ok) continue;
+
+    const data = await response.json();
+    const pages = Object.values(data?.query?.pages ?? {});
+    const match = pages.find((page) => {
+      const info = page?.imageinfo?.[0];
+      const url = info?.thumburl ?? info?.url ?? "";
+      const title = String(page?.title ?? "").toLowerCase();
+      return url && !url.toLowerCase().endsWith(".svg") && !title.includes("icon") && !title.includes("logo") && !title.includes("diagram");
+    });
+
+    if (match) {
+      const info = match.imageinfo?.[0];
+      return info?.thumburl ?? info?.url ?? null;
+    }
+  }
+
+  return null;
+}
 function getCareBlurb(plant) {
   const name = (plant?.name ?? "").toLowerCase();
 
@@ -637,5 +745,6 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
 
 
