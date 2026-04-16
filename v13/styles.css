@@ -456,10 +456,23 @@ main {
   align-self: end;
 }
 
+.modal-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.modal-insight-section {
+  flex: 1 1 auto;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 1.75rem;
+  flex: 0 0 auto;
+  align-self: flex-end;
 }
 
 #modal-water-log {
@@ -663,6 +676,7 @@ main {
     gap: 0.7rem 1rem;
   }
 }
+
 
 
 
