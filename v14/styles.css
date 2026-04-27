@@ -10,11 +10,11 @@
   --garden-columns: 3;
   --garden-gap: 1rem;
   --tile-size: 190px;
-  --card-delete-size: 30px;
-  --card-delete-offset: 0.65rem;
-  --card-info-size: 34px;
-  --card-water-size: 54px;
-  --card-action-icon-size: 26px;
+  --card-delete-size: 32px;
+  --card-delete-offset: 10px;
+  --card-info-size: 32px;
+  --card-water-size: 50px;
+  --card-action-icon-size: 24px;
 }
 
 body {
@@ -262,9 +262,9 @@ button[title] {
   display: block;
   min-width: 0;
   color: #73933f;
-  font-size: clamp(0.82rem, 1.3vw, 1.32rem);
+  font-size: clamp(0.72rem, 1.05vw, 1.16rem);
   font-weight: 800;
-  line-height: 1.08;
+  line-height: 1.05;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -320,13 +320,13 @@ button[title] {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: 0.75rem;
+  gap: 0.55rem;
 }
 
 .water-status {
-  font-size: clamp(0.78rem, 1.15vw, 0.98rem);
+  font-size: clamp(0.68rem, 0.95vw, 0.86rem);
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.28;
   color: var(--text-dark);
 }
 
@@ -760,6 +760,10 @@ button[title] {
     width: 100%;
   }
 }
+
+
+
+
 
 
 
