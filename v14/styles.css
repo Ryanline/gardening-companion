@@ -175,6 +175,7 @@ button[title] {
   min-width: 0;
   aspect-ratio: 1 / 1;
   border-radius: 28px;
+  box-sizing: border-box;
 }
 
 .empty-plot {
@@ -741,3 +742,4 @@ button[title] {
     width: 100%;
   }
 }
+
