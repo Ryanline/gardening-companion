@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gardening Companion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast" class="toast hidden" aria-live="polite"></div>
+
+  <div id="delete-banner" class="delete-banner hidden" role="status" aria-live="polite">
+    <span>Plant successfully deleted.</span>
+    <button id="undo-delete-btn" type="button" title="Restore the deleted plant">Undo?</button>
+  </div>
+
+  <header class="hero-shell">
+    <nav class="top-nav" aria-label="Version navigation">
+      <a href="../">Table of Contents</a>
+      <a href="../v2/">v2</a>
+      <a href="../v8/">v8</a>
+      <a href="../v9/">v9</a>
+      <a href="../v10/">v10</a>
+      <a href="../v13/">v13</a>
+      <a href="./" class="is-current">v14</a>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-copy">
+        <h1>Gardening Companion</h1>
+        <p class="hero-tagline">Create a virtual garden to track your plants.</p>
+        <div class="hero-actions">
+          <button id="add-plant-btn" class="icon-button" type="button" title="Add a plant to your garden">
+            <img src="assets/new-plant.png" alt="" />
+            <span class="sr-only">Add Plant</span>
+          </button>
+          <button id="open-graph-btn" class="icon-button watering-button" type="button" title="View your watering timeline">
+            <img src="assets/stats.png" alt="" />
+            <span class="sr-only">Open watering timeline</span>
+          </button>
+        </div>
+      </div>
+      <div class="hero-photo-wrap">
+        <img class="hero-photo" src="assets/garden-photo.avif" alt="Garden photo" />
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <ul id="plant-list" class="garden-grid" aria-label="Garden"></ul>
+  </main>
+
+  <div id="plant-picker-backdrop" class="hidden"></div>
+
+  <div id="plant-picker-modal" class="picker-modal hidden" role="dialog" aria-modal="true" aria-labelledby="plant-picker-title">
+    <div class="picker-modal-inner">
+      <h2 id="plant-picker-title">Select an option:</h2>
+      <div id="plant-picker-options" class="picker-options"></div>
+    </div>
+  </div>
+
+  <div id="modal-backdrop" class="hidden"></div>
+
+  <div id="plant-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h2 id="modal-title">Plant</h2>
+      <button id="modal-close-btn" class="modal-close-btn" type="button" aria-label="Close" title="Close plant details">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <section class="modal-section modal-row">
+        <div id="modal-status" class="water-status status-warning">Please water me!</div>
+      </section>
+
+      <section class="modal-section">
+        <h3>Watering history</h3>
+        <ul id="modal-water-log"></ul>
+      </section>
+
+      <section class="modal-section">
+        <h3>Growth photos</h3>
+        <input type="file" id="photo-input" accept="image/*" />
+        <div id="photo-gallery" class="photo-gallery"></div>
+      </section>
+
+      <div class="modal-bottom">
+        <section class="modal-section modal-insight-section">
+          <h3>Plant Insight</h3>
+          <div class="insight-actions">
+            <button id="modal-care-btn" type="button" title="Learn how to care for this plant">How to Care</button>
+            <button id="modal-fact-btn" type="button" title="See a fun fact about this plant">Fun Fact</button>
+          </div>
+          <div id="modal-insight" class="insight-box hidden"></div>
+        </section>
+
+        <div class="modal-actions">
+          <button id="modal-water-btn" class="icon-button watering-button" type="button" title="Log watering for this plant">
+            <img src="assets/watering-pail.png" alt="" />
+            <span class="sr-only">Log Watering</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="graph-modal" class="modal graph-modal hidden" role="dialog" aria-modal="true" aria-labelledby="graph-title">
+    <div class="modal-header">
+      <div>
+        <h2 id="graph-title">Watering Timeline</h2>
+        <p class="graph-subtitle">Weekly watering counts by plant.</p>
+      </div>
+      <button id="graph-close-btn" class="modal-close-btn" type="button" aria-label="Close" title="Close watering timeline">&times;</button>
+    </div>
+    <div class="modal-body graph-modal-body">
+      <div id="graph-empty" class="graph-empty hidden">No watering history yet.</div>
+      <div id="graph-chart" class="graph-chart"></div>
+      <div id="graph-legend" class="graph-legend"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
