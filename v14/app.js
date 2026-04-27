@@ -319,9 +319,8 @@ function renderPlants() {
 
       li.innerHTML = `
         <article class="plant-card${photoClass}"${photoStyle}>
+          <button data-action="delete-plant" data-id="${plant.id}" class="plant-delete" aria-label="Delete ${escapeHtml(plant.name)}" title="Delete ${escapeHtml(plant.name)}">&times;</button>
           <div class="plant-card-content">
-            <button data-action="delete-plant" data-id="${plant.id}" class="plant-delete" aria-label="Delete ${escapeHtml(plant.name)}" title="Delete ${escapeHtml(plant.name)}">&times;</button>
-
             <div class="plant-title-row">
               <strong class="plant-name">${escapeHtml(plant.name)}</strong>
               <button data-action="open" data-id="${plant.id}" class="info-button" title="More info" aria-label="More info about ${escapeHtml(plant.name)}">
@@ -863,6 +862,7 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
 
 
 

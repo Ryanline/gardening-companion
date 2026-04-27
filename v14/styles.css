@@ -235,6 +235,7 @@ button[title] {
   position: absolute;
   top: var(--card-delete-offset);
   right: var(--card-delete-offset);
+  z-index: 2;
   width: var(--card-delete-size);
   height: var(--card-delete-size);
   border: 0;
@@ -762,6 +763,7 @@ button[title] {
     width: 100%;
   }
 }
+
 
 
 
