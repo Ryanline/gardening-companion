@@ -319,13 +319,15 @@ function renderPlants() {
 
       li.innerHTML = `
         <article class="plant-card${photoClass}"${photoStyle}>
-          <button data-action="delete-plant" data-id="${plant.id}" class="plant-delete" aria-label="Delete ${escapeHtml(plant.name)}" title="Delete ${escapeHtml(plant.name)}">&times;</button>
           <div class="plant-card-content">
-            <div class="plant-title-row">
+            <div class="plant-card-top">
               <strong class="plant-name">${escapeHtml(plant.name)}</strong>
-              <button data-action="open" data-id="${plant.id}" class="info-button" title="More info" aria-label="More info about ${escapeHtml(plant.name)}">
-                <img src="assets/info-icon.svg" alt="" />
-              </button>
+              <div class="plant-card-actions">
+                <button data-action="open" data-id="${plant.id}" class="info-button" title="More info" aria-label="More info about ${escapeHtml(plant.name)}">
+                  <img src="assets/info-icon.svg" alt="" />
+                </button>
+                <button data-action="delete-plant" data-id="${plant.id}" class="plant-delete" aria-label="Delete ${escapeHtml(plant.name)}" title="Delete ${escapeHtml(plant.name)}">&times;</button>
+              </div>
             </div>
 
             <div class="plant-footer">
@@ -399,16 +401,26 @@ function refreshGardenLayout() {
   const tileFromHeight = (availableHeight - gap * (rows - 1)) / rows;
   const tileSize = Math.max(96, Math.floor(Math.min(tileFromWidth, tileFromHeight)));
 
-  const infoSize = Math.max(26, Math.min(32, Math.round(tileSize * 0.17)));
-  const waterSize = Math.max(40, Math.min(50, Math.round(tileSize * 0.27)));
-  const iconSize = Math.max(18, Math.min(24, Math.round(waterSize * 0.47)));
+  const cardPadding = Math.max(10, Math.min(16, Math.round(tileSize * 0.08)));
+  const nameSize = Math.max(15, Math.min(28, Math.round(tileSize * 0.12)));
+  const statusSize = Math.max(10, Math.min(16, Math.round(tileSize * 0.08)));
+  const deleteSize = Math.max(22, Math.min(30, Math.round(tileSize * 0.16)));
+  const infoSize = Math.max(24, Math.min(34, Math.round(tileSize * 0.17)));
+  const waterSize = Math.max(34, Math.min(48, Math.round(tileSize * 0.26)));
+  const iconSize = Math.max(15, Math.min(22, Math.round(waterSize * 0.46)));
+  const cardRadius = Math.max(20, Math.min(28, Math.round(tileSize * 0.14)));
 
   plantList.style.setProperty("--garden-columns", String(columns));
   plantList.style.setProperty("--garden-gap", `${gap}px`);
   plantList.style.setProperty("--tile-size", `${tileSize}px`);
+  plantList.style.setProperty("--card-padding", `${cardPadding}px`);
+  plantList.style.setProperty("--card-title-size", `${nameSize}px`);
+  plantList.style.setProperty("--card-status-size", `${statusSize}px`);
+  plantList.style.setProperty("--card-delete-size", `${deleteSize}px`);
   plantList.style.setProperty("--card-info-size", `${infoSize}px`);
   plantList.style.setProperty("--card-water-size", `${waterSize}px`);
   plantList.style.setProperty("--card-action-icon-size", `${iconSize}px`);
+  plantList.style.setProperty("--card-radius", `${cardRadius}px`);
 }
 
 function getPlant(plantId) {

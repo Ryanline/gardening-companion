@@ -10,11 +10,14 @@
   --garden-columns: 3;
   --garden-gap: 1rem;
   --tile-size: 190px;
-  --card-delete-size: 32px;
-  --card-delete-offset: 10px;
+  --card-padding: 16px;
+  --card-radius: 28px;
+  --card-title-size: 22px;
+  --card-status-size: 15px;
+  --card-delete-size: 28px;
   --card-info-size: 32px;
-  --card-water-size: 50px;
-  --card-action-icon-size: 24px;
+  --card-water-size: 46px;
+  --card-action-icon-size: 22px;
 }
 
 body {
@@ -179,7 +182,7 @@ button[title] {
   width: var(--tile-size);
   min-width: 0;
   aspect-ratio: 1 / 1;
-  border-radius: 28px;
+  border-radius: var(--card-radius);
   box-sizing: border-box;
 }
 
@@ -197,7 +200,7 @@ button[title] {
 
 .plant-card {
   position: relative;
-  padding: clamp(0.8rem, 1.5vw, 1.05rem);
+  padding: var(--card-padding);
   background: var(--card-cream);
   background-size: cover;
   background-position: center;
@@ -212,40 +215,57 @@ button[title] {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(12, 20, 10, 0.18);
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
+  background: rgba(12, 20, 10, 0.26);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .plant-card-content {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   width: 100%;
   min-height: 100%;
   height: 100%;
+  gap: clamp(0.4rem, 1.2vw, 0.7rem);
 }
 
 .plant-card--photo {
   color: #ffffff;
 }
 
+.plant-card-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.plant-card-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+}
+
 .plant-delete {
-  position: absolute;
-  top: var(--card-delete-offset);
-  right: var(--card-delete-offset);
-  z-index: 2;
   width: var(--card-delete-size);
   height: var(--card-delete-size);
   border: 0;
   border-radius: 999px;
   background: rgba(115, 147, 63, 0.16);
   color: #5b7340;
-  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
   line-height: 1;
   cursor: pointer;
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
 }
 
 .plant-card--photo .plant-delete {
@@ -253,19 +273,11 @@ button[title] {
   color: #ffffff;
 }
 
-.plant-title-row {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-width: 0;
-  padding-right: calc(var(--card-delete-size) + var(--card-delete-offset) + 0.65rem);
-}
-
 .plant-name {
   display: block;
   min-width: 0;
   color: #73933f;
-  font-size: clamp(0.72rem, 1.05vw, 1.16rem);
+  font-size: var(--card-title-size);
   font-weight: 800;
   line-height: 1.05;
   white-space: nowrap;
@@ -327,9 +339,9 @@ button[title] {
 }
 
 .water-status {
-  font-size: clamp(0.68rem, 0.95vw, 0.86rem);
+  font-size: var(--card-status-size);
   font-weight: 600;
-  line-height: 1.28;
+  line-height: 1.2;
   color: var(--text-dark);
 }
 
@@ -357,6 +369,15 @@ button[title] {
 .plant-card .watering-button img {
   width: var(--card-action-icon-size);
   height: var(--card-action-icon-size);
+}
+
+.plant-card .water-status {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.plant-card .plant-footer .watering-button {
+  justify-self: end;
 }
 
 .watering-button img {
