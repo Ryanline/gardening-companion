@@ -392,9 +392,20 @@ function refreshGardenLayout() {
   const tileFromHeight = (availableHeight - gap * (rows - 1)) / rows;
   const tileSize = Math.max(96, Math.floor(Math.min(tileFromWidth, tileFromHeight)));
 
+  const deleteSize = Math.max(24, Math.min(32, Math.round(tileSize * 0.18)));
+  const infoSize = Math.max(28, Math.min(36, Math.round(tileSize * 0.2)));
+  const waterSize = Math.max(42, Math.min(58, Math.round(tileSize * 0.31)));
+  const iconSize = Math.max(20, Math.min(30, Math.round(waterSize * 0.48)));
+  const deleteOffset = Math.max(8, Math.min(12, Math.round(tileSize * 0.06)));
+
   plantList.style.setProperty("--garden-columns", String(columns));
   plantList.style.setProperty("--garden-gap", `${gap}px`);
   plantList.style.setProperty("--tile-size", `${tileSize}px`);
+  plantList.style.setProperty("--card-delete-size", `${deleteSize}px`);
+  plantList.style.setProperty("--card-delete-offset", `${deleteOffset}px`);
+  plantList.style.setProperty("--card-info-size", `${infoSize}px`);
+  plantList.style.setProperty("--card-water-size", `${waterSize}px`);
+  plantList.style.setProperty("--card-action-icon-size", `${iconSize}px`);
 }
 
 function getPlant(plantId) {
@@ -848,3 +859,4 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
