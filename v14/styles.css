@@ -658,10 +658,10 @@ button[title] {
 
 .toast {
   position: fixed;
-  top: 50%;
+  top: 1.25rem;
   left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: min(420px, 90vw);
+  transform: translateX(-50%);
+  max-width: min(360px, 88vw);
   padding: 14px 18px;
   border-radius: 14px;
   background: #4caf50;
@@ -760,6 +760,7 @@ button[title] {
     width: 100%;
   }
 }
+
 
 
 

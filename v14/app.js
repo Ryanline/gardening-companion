@@ -267,7 +267,13 @@ function formatDateTime(isoString) {
   return d.toLocaleString();
 }
 
-function getWaterStatus(plant) {
+function formatCompactWaterDate(isoString) {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  return d.toLocaleDateString([], { month: "short", day: "numeric" });
+}
+
+function getWaterStatus(plant, { compact = false } = {}) {
   if (!plant?.lastWatered) {
     return {
       text: WARNING_MESSAGE,
@@ -281,7 +287,9 @@ function getWaterStatus(plant) {
 
   if (diffDays <= RECENT_WATERING_DAYS) {
     return {
-      text: `Last watered: ${formatDateTime(plant.lastWatered)}`,
+      text: compact
+        ? `Watered ${formatCompactWaterDate(plant.lastWatered)}`
+        : `Last watered: ${formatDateTime(plant.lastWatered)}`,
       className: "status-ok"
     };
   }
@@ -302,7 +310,7 @@ function renderPlants() {
     li.className = "garden-slot";
 
     if (plant) {
-      const waterStatus = getWaterStatus(plant);
+      const waterStatus = getWaterStatus(plant, { compact: true });
       const imageUrl = getCachedPlantImage(plant.name);
       const photoClass = imageUrl ? " plant-card--photo" : "";
       const photoStyle = imageUrl
@@ -855,6 +863,7 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
 
 
 
